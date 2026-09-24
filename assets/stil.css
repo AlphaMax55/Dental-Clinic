@@ -1,0 +1,351 @@
+
+/* ========== MEGA MENÜ - PROFESYONEL TASARIM ========== */
+
+/* Ana Konteyner */
+.mega-menu-container {
+    position: fixed;
+    left: 0;
+    top: 70px;
+    width: 100%;
+    background: rgba(15, 23, 42, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    transition: all 0.2s ease;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+}
+
+.mega-menu-container.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* İçerik */
+.mega-menu-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.mega-menu-layout {
+    display: flex;
+    gap: 32px;
+    padding: 32px 0;
+    min-height: 400px;
+}
+
+/* ===== SOL: KATEGORİLER (w-80) ===== */
+.mega-menu-categories {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.mega-menu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mega-menu-badge {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #64748b;
+    text-transform: uppercase;
+}
+
+.mega-badge-cyan {
+    color: #06b6d4;
+}
+
+.mega-menu-count {
+    font-size: 10px;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    color: #94a3b8;
+}
+
+.mega-menu-cat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Kategori Butonları */
+.mega-cat-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #94a3b8;
+}
+
+.mega-cat-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+.mega-cat-btn.active {
+    background: linear-gradient(90deg, rgba(6, 182, 212, 0.15) 0%, transparent 100%);
+    border-left: 2px solid #06b6d4;
+    color: #06b6d4;
+}
+
+.mega-cat-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mega-cat-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.mega-cat-name {
+    flex: 1;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 12px;
+}
+
+.mega-cat-arrow svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+.mega-cat-btn:hover .mega-cat-arrow svg {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+.mega-cat-btn.active .mega-cat-arrow svg {
+    opacity: 1;
+    color: #06b6d4;
+}
+
+/* ===== ORTA: TEDAVİLER (flex-1) ===== */
+.mega-menu-tedaviler {
+    flex: 1;
+}
+
+.mega-menu-active-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #06b6d4;
+    letter-spacing: 1px;
+}
+
+.mega-menu-tedavi-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    max-height: 320px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin-top: 4px;
+}
+
+/* Tedavi Öğeleri */
+.mega-tedavi-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    background: transparent;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    color: #cbd5e1;
+    border: 1px solid transparent;
+}
+
+.mega-tedavi-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(6, 182, 212, 0.3);
+    transform: translateX(4px);
+}
+
+.mega-tedavi-dot {
+    width: 6px;
+    height: 6px;
+    background: #475569;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.mega-tedavi-item:hover .mega-tedavi-dot {
+    background: #06b6d4;
+    transform: scale(1.5);
+}
+
+.mega-tedavi-name {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.mega-tedavi-arrow {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+    transition: all 0.2s ease;
+    color: #06b6d4;
+}
+
+.mega-tedavi-item:hover .mega-tedavi-arrow {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+/* Scrollbar */
+.mega-menu-tedavi-list::-webkit-scrollbar {
+    width: 3px;
+}
+
+.mega-menu-tedavi-list::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 10px;
+}
+
+.mega-menu-tedavi-list::-webkit-scrollbar-thumb {
+    background: #06b6d4;
+    border-radius: 10px;
+}
+
+/* ===== SAĞ: CTA KARTI (w-72) ===== */
+.mega-menu-cta {
+    width: 280px;
+    flex-shrink: 0;
+}
+
+.mega-cta-card {
+    position: relative;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    border-radius: 20px;
+    padding: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(6, 182, 212, 0.2);
+    transition: all 0.3s ease;
+}
+
+.mega-cta-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(6, 182, 212, 0.5);
+    box-shadow: 0 20px 35px -10px rgba(6, 182, 212, 0.2);
+}
+
+.mega-cta-glow {
+    position: absolute;
+    top: -30%;
+    right: -30%;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transition: all 0.5s ease;
+}
+
+.mega-cta-card:hover .mega-cta-glow {
+    transform: scale(1.3);
+}
+
+.mega-cta-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(6, 182, 212, 0.15);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.mega-cta-icon svg {
+    width: 24px;
+    height: 24px;
+    color: #06b6d4;
+}
+
+.mega-cta-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.mega-cta-text {
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.mega-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(90deg, #06b6d4, #0891b2);
+    border: none;
+    border-radius: 40px;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.mega-cta-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.mega-cta-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px -5px rgba(6, 182, 212, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .mega-menu-cta {
+        display: none;
+    }
+    .mega-menu-tedavi-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .mega-menu-layout {
+        flex-direction: column;
+    }
+    .mega-menu-categories {
+        width: 100%;
+    }
+}

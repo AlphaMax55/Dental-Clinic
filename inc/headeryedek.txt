@@ -1,0 +1,475 @@
+<?php
+// www/inc/header.php - %100 SEF URL VE DRAG-DROP ŞEMA UYUMLU VERSİYON
+
+// ========== 1. DİL YÖNETİMİ VE OTURUM BAŞLATMA ==========
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// URL'den gelen dil değişikliği kontrolü
+if (isset($_GET['lang'])) {
+    $yeni_dil = ($_GET['lang'] === 'en') ? 'en' : 'tr';
+    $_SESSION['dil'] = $yeni_dil;
+    session_regenerate_id(true);
+}
+
+// Session yoksa otomatik tarayıcı tespiti yap
+if (!isset($_SESSION['dil'])) {
+    $tarayici_dili = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'] ?? 'tr', 0, 2);
+    $turkiye_kontrolu = true; 
+    
+    if ($turkiye_kontrolu) {
+        $_SESSION['dil'] = 'tr';
+    } else {
+        $_SESSION['dil'] = ($tarayici_dili === 'tr') ? 'tr' : 'en';
+    }
+}
+
+$lang = $_SESSION['dil'];
+
+// ========== 2. DEVAM EDEN KÜRESEL AYARLAR VE VERİTABANI ==========
+global $site_baslik, $site_aciklama, $ai_seo_json, $db;
+global $header_logo, $header_unvan, $header_uzmanlik, $header_telefon, $header_whatsapp, $header_lokasyon, $header_adres;
+global $header2_navlinks;
+global $page_title, $seo_description, $site_keywords, $dynamic_og_title, $og_image;
+
+$site_adresi_ana = "https://www.dribrahimdurandentalclinic.com";
+
+// Ayarları tek seferde veritabanından çek
+$stmt_ayarlar = $db->query("SELECT ayar_key, ayar_value FROM site_ayarlari");
+$ayarlar = $stmt_ayarlar->fetchAll(PDO::FETCH_KEY_PAIR);
+
+// ========== DİL LİNKİ OLUŞTURUCU (TAM SEF URL DESTEKLİ) ==========
+function dil_linki_olustur($hedef_dil) {
+    global $site_adresi_ana;
+    $request_uri = $_SERVER['REQUEST_URI'];
+    
+    if (preg_match('#^/tedaviler/([^/?]+)#', $request_uri, $matches)) {
+        $slug = $matches[1];
+        return $site_adresi_ana . '/tedaviler/' . $slug . '?lang=' . $hedef_dil;
+    }
+    
+    $current_params = $_GET;
+    $current_params['lang'] = $hedef_dil;
+    unset($current_params['slug']);
+    
+    $path = strtok($request_uri, '?');
+    $query_string = http_build_query($current_params);
+    
+    if (!empty($query_string)) {
+        return $site_adresi_ana . $path . '?' . $query_string;
+    }
+    return $site_adresi_ana . $path;
+}
+
+// ========== 3. DEFANSİF CANONICAL VE ROBOTS ZIRHI (TÜM SAYFALAR İÇİN) ==========
+
+// Mevcut sayfanın adını ve slug'ını al
+$mevcut_sayfa_adi = basename($_SERVER['SCRIPT_NAME']);
+$mevcut_slug_degeri = isset($_GET['slug']) ? trim($_GET['slug']) : '';
+$gecerli_sayfa_durumu = true;
+$robots_etiketi_icerigi = '<meta name="robots" content="index, follow">';
+
+// 1. CANONICAL URL'Yİ OLUŞTUR (TÜM SAYFALAR İÇİN)
+$site_url = "https://www.dribrahimdurandentalclinic.com";
+
+// Mevcut URL'yi al
+$mevcut_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+
+// 🔥 YENİ: Eğer sayfa İngilizce ise (lang=en varsa) canonical'ı KORU
+if (isset($_GET['lang']) && $_GET['lang'] === 'en') {
+    $canonical_url = $mevcut_url; // ?lang=en ile birlikte
+    $canonical_url = rtrim($canonical_url, '?&');
+} else {
+    $canonical_url = preg_replace('/[?&]lang=[a-z]{2}/', '', $mevcut_url);
+    $canonical_url = rtrim($canonical_url, '?&');
+}
+
+// 2. TEDAVİ DETAY SAYFASI İÇİN ÖZEL KONTROL (Slug kontrolü)
+if ($mevcut_sayfa_adi === 'tedavi-detay.php') {
+    if (empty($mevcut_slug_degeri)) {
+        $gecerli_sayfa_durumu = false;
+        $canonical_url = $site_url . '/';
+        $robots_etiketi_icerigi = '<meta name="robots" content="noindex, nofollow">';
+    } else {
+        try {
+            $sorgu_aktiflik = $db->prepare("SELECT id FROM tedaviler WHERE slug = :slug AND aktif = 1 AND silindi = 0 LIMIT 1");
+            $sorgu_aktiflik->execute([':slug' => $mevcut_slug_degeri]);
+            
+            if ($sorgu_aktiflik->rowCount() === 0) {
+                $gecerli_sayfa_durumu = false;
+                $canonical_url = $site_url . '/';
+                $robots_etiketi_icerigi = '<meta name="robots" content="noindex, nofollow">';
+            } else {
+                $gecerli_sayfa_durumu = true;
+                $canonical_url = $site_url . '/tedaviler/' . $mevcut_slug_degeri;
+                $robots_etiketi_icerigi = '<meta name="robots" content="index, follow">';
+            }
+        } catch (PDOException $hata) {
+            $gecerli_sayfa_durumu = false;
+            $canonical_url = $site_url . '/';
+            $robots_etiketi_icerigi = '<meta name="robots" content="noindex, nofollow">';
+        }
+    }
+}
+
+// 3. MEVCUT CANONICAL LINK DEĞİŞKENİNE ATA
+$mevcut_canonical_link = $canonical_url;
+
+// ========== 4. SEO VE META DEĞİŞKENLERİ MOTORU ==========
+// Varsayılan değerler
+$default_title = 'Prof. Dr. İbrahim Duran | Diş Kliniği Samsun';
+$default_description = 'Prof. Dr. İbrahim Duran kliniğinde implant, gülüş tasarımı ve ortodonti hizmetleri.';
+$default_keywords = 'diş kliniği, implant, gülüş tasarımı, ortodonti, Samsun diş hekimi';
+
+// RAW değerleri al
+$raw_site_baslik = isset($ayarlar['site_baslik']) ? t_cevir($ayarlar['site_baslik']) : $default_title;
+$raw_site_aciklama = isset($ayarlar['seo_description']) ? t_cevir($ayarlar['seo_description']) : $default_description;
+$raw_site_keywords = isset($ayarlar['site_keywords']) ? t_cevir($ayarlar['site_keywords']) : $default_keywords;
+
+// Sayfa değişkenlerini kontrol et (galeri.php'den gelenler)
+$sayfa_title = $page_title ?? $raw_site_baslik;
+$sayfa_description = $seo_description ?? $raw_site_aciklama;
+$sayfa_keywords = $site_keywords ?? $raw_site_keywords;
+$sayfa_og_title = $dynamic_og_title ?? $sayfa_title;
+
+// ========== 5. BAŞLIK FORMATLAMA (AKILLI VE KORUYUCU) ==========
+/**
+ * Başlığı formatla
+ * - Eğer başlık zaten "|" ile ayrılmışsa DOKUNMA
+ * - Eğer başlık JSON ise çöz
+ * - Sadece düz metinse ve "|" yoksa formatla
+ */
+function format_title($title, $lang) {
+    // JSON kontrolü
+    if (strpos($title, '{') === 0 || strpos($title, '[') === 0) {
+        $json_coz = json_decode($title, true);
+        if (is_array($json_coz)) {
+            $title = $json_coz[$lang] ?? $json_coz['tr'] ?? $title;
+        }
+    }
+    
+    // Eğer başlıkta "|" varsa zaten formatlanmıştır, DOKUNMA!
+    if (strpos($title, '|') !== false) {
+        return $title;
+    }
+    
+    // Düz metin ise formatla
+    $clean_title = trim($title);
+    if (empty($clean_title)) {
+        return 'Prof. Dr. İbrahim Duran | Diş Kliniği Samsun';
+    }
+    
+    return $clean_title . ' | Prof. Dr. İbrahim Duran | Diş Kliniği Samsun';
+}
+
+// Page Title'i formatla
+$page_title = format_title($sayfa_title, $lang);
+
+// OG Title'i formatla
+$dynamic_og_title = format_title($sayfa_og_title, $lang);
+
+// Description ve Keywords
+$seo_description = $sayfa_description;
+$site_keywords = $sayfa_keywords;
+
+// ========== 6. DİĞER META DEĞİŞKENLERİ ==========
+$favicon = $ayarlar['site_favicon'] ?? '/favicon.ico';
+$google_analytics_id = $ayarlar['google_analytics'] ?? '';
+
+// ========== OG IMAGE (ABSOLUTE URL) ==========
+$site_url = "https://www.dribrahimdurandentalclinic.com";
+// Tedaviye özel görseli mermi gibi global değişkene atıyoruz
+$og_image = !empty($tedavi_raw['sonrasi_resim']) 
+    ? $tedavi_raw['sonrasi_resim'] 
+    : (!empty($tedavi_raw['oncesi_resim']) 
+        ? $tedavi_raw['oncesi_resim'] 
+        : '/ibrahimduran.png');
+if (!empty($ai_seo_json) && is_array($ai_seo_json)) {
+    if (isset($ai_seo_json['image'])) {
+        $og_image = is_array($ai_seo_json['image']) ? ($ai_seo_json['image']['url'] ?? $ai_seo_json['image'][0] ?? $og_image) : $ai_seo_json['image'];
+    } elseif (isset($ai_seo_json['primaryImageOfPage']['url'])) {
+        $og_image = $ai_seo_json['primaryImageOfPage']['url'];
+    }
+}
+
+// Eğer boşsa veya / ise varsayılan ata
+if (empty($og_image) || $og_image === '/') {
+    $og_image = '/ibrahimduran.png';
+}
+
+// Eğer relative ise absolute yap
+if (strpos($og_image, 'http') !== 0) {
+    $og_image = $site_url . '/' . ltrim($og_image, '/');
+}
+
+// ========== 7. HEADER GÖRSEL VE NAVLINK AYARLARI ==========
+$header_logo = $ayarlar['header1_logo'] ?? '';
+$header_unvan = isset($ayarlar['header1_unvan']) ? t_cevir($ayarlar['header1_unvan']) : 'Prof. Dr. İbrahim Duran';
+$header_uzmanlik = isset($ayarlar['header1_uzmanlik']) ? t_cevir($ayarlar['header1_uzmanlik']) : 'Estetik Diş Hekimi';
+$header_lokasyon = isset($ayarlar['header1_lokasyon']) ? t_cevir($ayarlar['header1_lokasyon']) : 'Atakum, Samsun';
+$header_telefon = $ayarlar['header1_telefon'] ?? '';
+$header_whatsapp = $ayarlar['header1_whatsapp'] ?? '';
+$header_adres = $header_adres ?? '';
+
+if (empty($header_logo)) {
+    $header_logo = 'https://w7.pngwing.com/pngs/667/263/png-transparent-dentistry-human-tooth-periodontology-health-blue-heart-logo-thumbnail.png';
+}
+
+$header2_navlinks = json_decode($ayarlar['header2_navlinks'] ?? '', true);
+if (!is_array($header2_navlinks)) {
+    $header2_navlinks = [];
+}
+
+$temiz_navlinks = [];
+foreach ($header2_navlinks as $item) {
+    $name = trim($item['name'] ?? '');
+    $link = trim($item['link'] ?? '');
+    
+    if (empty($name)) continue;
+    
+    if (empty($link) || $link === '/') {
+        $link = SITE_PATH . '/';
+    } elseif (strpos($link, 'http') !== 0) {
+        $link = SITE_PATH . '/' . ltrim($link, '/');
+    }
+    $link = str_replace(['//', 'http:/', 'https:/'], ['/', 'http://', 'https://'], $link);
+    
+    $temiz_navlinks[] = ['name' => t_cevir($name), 'link' => $link];
+}
+$header2_navlinks = $temiz_navlinks;
+
+$dinamik_sayfalar = $db->query("SELECT baslik, menu_adi, slug FROM dinamik_sayfalar WHERE aktif = 1 ORDER BY sira ASC")->fetchAll();
+$mevcut_isimler = array_column($header2_navlinks, 'name');
+$sabit_isimler = ['Ana Sayfa', 'Kurumsal', 'Tedavilerimiz', 'Teknolojiler', 'Galeri', 'Blog', 'İletişim'];
+$sabit_isimler_en = ['Home', 'Corporate', 'Treatments', 'Technologies', 'Gallery', 'Blog', 'Contact'];
+
+foreach ($dinamik_sayfalar as $ds) {
+    $ds_name = t_cevir($ds['menu_adi']);
+    if (in_array($ds_name, $sabit_isimler) || in_array($ds_name, $sabit_isimler_en)) {
+        continue;
+    }
+    if (!in_array($ds_name, $mevcut_isimler)) {
+        $header2_navlinks[] = [
+            'name' => $ds_name, 
+            'link' => SITE_PATH . '/' . ltrim($ds['slug'], '/')
+        ];
+    }
+}
+
+$benzersiz_navlinks = [];
+foreach ($header2_navlinks as $item) {
+    $benzersiz_navlinks[$item['name']] = $item;
+}
+$header2_navlinks = array_values($benzersiz_navlinks);
+
+$populer_aramalar = json_decode($ayarlar['header2_populer_aramalar'] ?? '', true);
+if (!is_array($populer_aramalar) || empty($populer_aramalar)) {
+    $populer_aramalar = ['İmplant', 'Zirkonyum', 'Gülüş Tasarımı', 'Fiyatlar', 'Randevu'];
+}
+
+// ========== 8. MEGA MENÜ İÇİN TEDAVİLER KATEGORİZASYONU ==========
+$mega_menu_kategoriler = [];
+$stmt = $db->query("SELECT DISTINCT kategori FROM tedaviler WHERE silindi = 0 AND aktif = 1 ORDER BY kategori");
+$kategoriler = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+foreach($kategoriler as $kategori_adi) {
+    $kat_title = $kategori_adi;
+    $kategori_json = json_decode($kategori_adi, true);
+    if (is_array($kategori_json)) {
+        $kat_title = $kategori_json[$lang] ?? $kategori_json['tr'] ?? $kategori_adi;
+    } else {
+        $kat_title = t_cevir($kategori_adi);
+    }
+
+    $stmt2 = $db->prepare("SELECT baslik, slug FROM tedaviler WHERE kategori = ? AND silindi = 0 AND aktif = 1 ORDER BY sira ASC");
+    $stmt2->execute([$kategori_adi]);
+    $tedaviler_list = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach($tedaviler_list as &$t_item) {
+        $baslik_json = json_decode($t_item['baslik'], true);
+        if (is_array($baslik_json)) {
+            $ham_baslik = $baslik_json[$lang] ?? $baslik_json['tr'] ?? $t_item['baslik'];
+        } else {
+            $ham_baslik = $t_item['baslik'];
+        }
+        $t_item['baslik'] = t_cevir($ham_baslik);
+    }
+    unset($t_item); 
+    
+    $mega_menu_kategoriler[] = [
+        'title' => $kat_title, 
+        'items' => $tedaviler_list
+    ];
+}
+
+// ========== 9. AI SEO JSON-LD OTOMASYONU ==========
+$ai_seo_json = null;
+$stmt_ai = $db->prepare("SELECT deger FROM ayarlar WHERE anahtar = 'ai_seo'");
+$stmt_ai->execute();
+$ai_seo_deger = $stmt_ai->fetchColumn();
+if ($ai_seo_deger) {
+    $ai_seo_json = json_decode($ai_seo_deger, true);
+    
+    if (is_array($ai_seo_json)) {
+        array_walk_recursive($ai_seo_json, function(&$deger, $anahtar) use ($lang) {
+            if (is_string($deger)) {
+                if (trim($deger) === 'Çarşamba' || trim($deger) === 'çarşamba') {
+                    $deger = ($lang === 'en') ? 'Carsamba' : 'Çarşamba';
+                    return;
+                }
+                if (strtolower(trim($deger)) === 'dentist') {
+                    $deger = 'Dentist';
+                    return;
+                }
+                if ($anahtar === '@type' || $anahtar === '@id') {
+                    return; 
+                }
+                if (strpos($deger, 'http') !== 0 && $anahtar !== '@type' && $anahtar !== '@context') {
+                    $deger = t_cevir($deger);
+                    if ($anahtar === 'name' || $anahtar === 'keywords') {
+                        if ($lang === 'en') {
+                            $deger = ucwords(str_replace(['ı', 'i̇'], ['I', 'I'], mb_strtolower($deger, 'UTF-8')));
+                        } else {
+                            $deger = mb_convert_case($deger, MB_CASE_TITLE, "UTF-8");
+                        }
+                    }
+                }
+            }
+        });
+    }
+}
+
+// ========== 10. TELEFON TEMİZLEME ==========
+$telefon_clear = preg_replace('/[^0-9]/', '', $header_telefon ?: '905052232343');
+$whatsapp_clear = preg_replace('/[^0-9]/', '', $header_whatsapp ?: '905052232343');
+if(substr($whatsapp_clear, 0, 1) == '0') $whatsapp_clear = '90' . substr($whatsapp_clear, 1);
+
+// ========== 11. SABİT DEĞERLER ==========
+$site_baslik = $raw_site_baslik;
+$page_description = $seo_description;
+$site_adresi_ana = "https://www.dribrahimdurandentalclinic.com";
+
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $lang; ?>">
+<head> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <?php 
+    if (!empty($robots_etiketi_icerigi)) {
+        echo '    ' . $robots_etiketi_icerigi . "\n";
+    } else {
+        echo '    <meta name="robots" content="index, follow">' . "\n";
+    }
+    
+    echo '    <link rel="canonical" href="' . htmlspecialchars($mevcut_canonical_link) . '" />' . "\n";
+    
+    // HREFLANG
+if ($gecerli_sayfa_durumu) {
+    // 🔥 URL'deki mevcut lang parametresini temizle
+    $hreflang_base = preg_replace('/[?&]lang=[a-z]{2}/', '', $mevcut_canonical_link);
+    $hreflang_base = rtrim($hreflang_base, '?&');
+    
+    $turkce_alternatif = $hreflang_base . (strpos($hreflang_base, '?') !== false ? '&' : '?') . 'lang=tr';
+    $ingilizce_alternatif = $hreflang_base . (strpos($hreflang_base, '?') !== false ? '&' : '?') . 'lang=en';
+    
+    echo '    <link rel="alternate" hreflang="tr" href="' . htmlspecialchars($turkce_alternatif) . '" />' . "\n";
+    echo '    <link rel="alternate" hreflang="en" href="' . htmlspecialchars($ingilizce_alternatif) . '" />' . "\n";
+    echo '    <link rel="alternate" hreflang="x-default" href="' . htmlspecialchars($hreflang_base) . '" />' . "\n";
+}
+    ?>
+    
+    <?php
+    $css_file = $_SERVER['DOCUMENT_ROOT'] . '/assets/chunks/b3deedb6e72ce3d2.css';
+    if (file_exists($css_file)): ?>
+    <link rel="preload" href="/assets/chunks/b3deedb6e72ce3d2.css" as="style">
+    <link rel="stylesheet" href="/assets/chunks/b3deedb6e72ce3d2.css">
+    <?php endif; ?>
+    
+    <title><?php echo htmlspecialchars($page_title); ?></title>
+    <meta name="description" content="<?php echo htmlspecialchars($seo_description); ?>">
+    <meta name="keywords" content="<?php echo htmlspecialchars($site_keywords); ?>">
+    <meta name="author" content="Prof. Dr. İbrahim Duran">
+    
+    <link rel="icon" href="<?php echo htmlspecialchars($favicon); ?>?v=<?php echo time(); ?>">   
+    <meta http-equiv="Content-Language" content="<?php echo $lang; ?>">
+    <!-- API için ön bağlantı -->
+<link rel="preconnect" href="/api/">
+<link rel="dns-prefetch" href="/api/">
+    <?php if($ai_seo_json && is_array($ai_seo_json)): ?>
+    <script type="application/ld+json" data-ai-seo="true">
+    <?php echo json_encode($ai_seo_json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+    </script>
+    <?php endif; ?>
+    
+    <?php echo csrf_meta_tag(); ?>
+    
+    <?php if (!empty($google_analytics_id) && $google_analytics_id !== 'G-XXXXXXXXXX'): ?>
+    <script>
+    (function() {
+        'use strict';
+        const GA_ID = "<?php echo htmlspecialchars($google_analytics_id); ?>";
+        let analyticsLoaded = false;
+        let idleTimer = null;
+        function loadAnalytics() {
+            if (analyticsLoaded) return;
+            analyticsLoaded = true;
+            const scheduleLoad = window.requestIdleCallback || function(cb) { setTimeout(cb, 1); };
+            scheduleLoad(() => {
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){ window.dataLayer.push(arguments); }
+                gtag('js', new Date());
+                gtag('config', GA_ID, {
+                    send_page_view: true,
+                    anonymize_ip: true,
+                    cookie_flags: 'SameSite=None;Secure'
+                });
+                const script = document.createElement('script');
+                script.async = true;
+                script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+                script.crossOrigin = 'anonymous';
+                script.onload = () => {
+                    window.removeEventListener('scroll', loadAnalytics);
+                    window.removeEventListener('click', loadAnalytics);
+                    window.removeEventListener('touchstart', loadAnalytics);
+                    if (idleTimer) clearTimeout(idleTimer);
+                };
+                document.head.appendChild(script);
+            });
+        }
+        if (document.readyState === 'complete') {
+            loadAnalytics();
+        } else {
+            window.addEventListener('load', loadAnalytics, { once: true });
+        }
+        const events = ['scroll', 'click', 'touchstart'];
+        events.forEach(event => {
+            window.addEventListener(event, loadAnalytics, { once: true, passive: true });
+        });
+        idleTimer = setTimeout(loadAnalytics, 8000);
+    })();
+    </script>
+    <?php endif; ?>
+
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap"></noscript>
+
+    <meta property="og:title" content="<?php echo htmlspecialchars($dynamic_og_title); ?>">
+    <meta property="og:description" content="<?php echo htmlspecialchars($seo_description); ?>">
+    <meta property="og:image" content="<?php echo htmlspecialchars($og_image); ?>">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <link rel="image_src" href="<?php echo htmlspecialchars($og_image); ?>">
+    <meta property="og:url" content="<?php echo htmlspecialchars($mevcut_canonical_link); ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Prof. Dr. İbrahim Duran">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?php echo htmlspecialchars($dynamic_og_title); ?>">
+    <meta name="twitter:description" content="<?php echo htmlspecialchars($seo_description); ?>">
+    <meta name="twitter:image" content="<?php echo htmlspecialchars($og_image); ?>">
+</head>

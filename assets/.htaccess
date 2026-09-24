@@ -1,0 +1,9 @@
+# ========== ASSETS KLASÖRÜNÜ KORU ==========
+#Order Deny,Allow
+#Deny from all
+
+# Sadece belirli dosya türlerine izin ver (css, js, resim)
+<FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|svg|woff|woff2|ttf|eot)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>

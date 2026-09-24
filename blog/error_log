@@ -1,0 +1,71 @@
+[21-May-2026 22:46:19 Europe/Istanbul] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/drib4094/public_html/blog/index.php on line 287
+[21-May-2026 22:46:20 Europe/Istanbul] PHP Parse error:  syntax error, unexpected 'else' (T_ELSE) in /home/drib4094/public_html/blog/index.php on line 287
+[09-Aug-2026 12:48:08 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1227
+[09-Aug-2026 12:48:59 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:48:59 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:49:00 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:49:06 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:49:09 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:49:20 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:49:21 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 12:49:21 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 1240
+[09-Aug-2026 13:02:37 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 43
+[09-Aug-2026 13:02:43 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 43
+[09-Aug-2026 13:02:49 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '}', expecting end of file in /home/drib4094/public_html/blog/index.php on line 43
+[09-Aug-2026 14:51:46 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/includes/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 9
+[09-Aug-2026 14:51:46 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/includes/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 9
+[09-Aug-2026 14:51:49 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/includes/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 9
+[09-Aug-2026 14:51:49 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/includes/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 9
+[09-Aug-2026 14:52:22 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/includes/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 12
+[09-Aug-2026 14:52:22 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/includes/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 12
+[10-Aug-2026 00:12:22 Europe/Istanbul] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/drib4094/public_html/blog/index.php:43
+Stack trace:
+#0 {main}
+  thrown in /home/drib4094/public_html/blog/index.php on line 43
+[10-Aug-2026 00:12:25 Europe/Istanbul] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/drib4094/public_html/blog/index.php:43
+Stack trace:
+#0 {main}
+  thrown in /home/drib4094/public_html/blog/index.php on line 43
+[10-Aug-2026 00:12:57 Europe/Istanbul] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/drib4094/public_html/blog/index.php:43
+Stack trace:
+#0 {main}
+  thrown in /home/drib4094/public_html/blog/index.php on line 43
+[10-Aug-2026 00:12:57 Europe/Istanbul] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/drib4094/public_html/blog/index.php:43
+Stack trace:
+#0 {main}
+  thrown in /home/drib4094/public_html/blog/index.php on line 43
+[10-Aug-2026 00:13:15 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:15 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:16 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:16 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:16 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:16 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:47 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:47 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Warning:  require_once(/home/drib4094/public_html/blog/inc/config.php): failed to open stream: No such file or directory in /home/drib4094/public_html/blog/index.php on line 14
+[10-Aug-2026 00:13:48 Europe/Istanbul] PHP Fatal error:  require_once(): Failed opening required '/home/drib4094/public_html/blog/inc/config.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/drib4094/public_html/blog/index.php on line 14
+[19-Aug-2026 22:08:45 Europe/Istanbul] PHP Parse error:  syntax error, unexpected ';' in /home/drib4094/public_html/blog/index.php on line 80
+[19-Aug-2026 22:08:47 Europe/Istanbul] PHP Parse error:  syntax error, unexpected ';' in /home/drib4094/public_html/blog/index.php on line 80
+[03-Sep-2026 17:08:38 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '>', expecting end of file in /home/drib4094/public_html/blog/index.php on line 623
+[03-Sep-2026 17:08:40 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '>', expecting end of file in /home/drib4094/public_html/blog/index.php on line 623
+[03-Sep-2026 17:09:39 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '>', expecting end of file in /home/drib4094/public_html/blog/index.php on line 624
+[03-Sep-2026 17:46:07 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 793
+[03-Sep-2026 17:48:55 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 793
+[03-Sep-2026 17:48:57 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 793
+[03-Sep-2026 18:21:53 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '`' in /home/drib4094/public_html/blog/index.php on line 95
+[03-Sep-2026 18:21:54 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '`' in /home/drib4094/public_html/blog/index.php on line 95
+[03-Sep-2026 18:21:55 Europe/Istanbul] PHP Parse error:  syntax error, unexpected '`' in /home/drib4094/public_html/blog/index.php on line 95
+[21-Sep-2026 16:08:01 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 868
+[21-Sep-2026 18:32:33 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 868
+[21-Sep-2026 18:32:34 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 868
+[21-Sep-2026 18:32:59 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 868
+[21-Sep-2026 18:33:00 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 868
+[21-Sep-2026 18:33:02 Europe/Istanbul] PHP Parse error:  syntax error, unexpected end of file in /home/drib4094/public_html/blog/index.php on line 868

@@ -1,0 +1,180 @@
+# ====================================================================
+# Prof. Dr. İbrahim Duran Dental Clinic - SEARCH CONSOLE KESİN ÇÖZÜMÜ
+# ====================================================================
+
+RewriteEngine On
+RewriteBase /
+Options -MultiViews
+
+# ============================================================
+# 🔥 ESKİ YANLIŞ BLOG URL'LERİ → DOĞRU KATEGORİLİ URL (301)
+# (En üste konulmalıdır!)
+# ============================================================
+RewriteRule ^blog/koltuk-korkusunu-yenmek-dental-fobi/?$ /blog/biz-kimiz-hekimin-kaleminden/koltuk-korkusunu-yenmek-dental-fobi [QSD,R=301,L]
+RewriteRule ^blog/dis-beyazlatma-sonrasi-hassasiyet/?$ /blog/estetik-dis-hekimligi/dis-beyazlatma-sonrasi-hassasiyet [QSD,R=301,L]
+RewriteRule ^blog/kanal-tedavili-disler-ne-kadar-dayanir/?$ /blog/endodonti/kanal-tedavili-disler-ne-kadar-dayanir [QSD,R=301,L]
+RewriteRule ^blog/all-on-4-all-on-6-implant-teknolojisi/?$ /blog/implantoloji/all-on-4-all-on-6-implant-teknolojisi [QSD,R=301,L]
+RewriteRule ^blog/implant-fiyatlari-ucuz-implant-riskleri/?$ /blog/implantoloji/implant-fiyatlari-ucuz-implant-riskleri [QSD,R=301,L]
+RewriteRule ^blog/kemik-grefti-bone-graft-nedir/?$ /blog/implantoloji/kemik-grefti-bone-graft-nedir [QSD,R=301,L]
+RewriteRule ^blog/hareketli-protez-konfor-bakim-rehberi/?$ /blog/cene-eklemi/hareketli-protez-konfor-bakim-rehberi [QSD,R=301,L]
+RewriteRule ^blog/sabit-protezler-mi-hareketli-protezler-mi/?$ /blog/cene-eklemi/sabit-protezler-mi-hareketli-protezler-mi [QSD,R=301,L]
+RewriteRule ^blog/bilincli-sedasyon-nedir/?$ /blog/agiz-cerrahisi/bilincli-sedasyon-nedir [QSD,R=301,L]
+RewriteRule ^blog/1984ten-bugune-teknolojik-yolculuk/?$ /blog/biz-kimiz-hekimin-kaleminden/1984ten-bugune-teknolojik-yolculuk [QSD,R=301,L]
+RewriteRule ^blog/20-yas-disleri-cektirmeli-mi-birakmali-mi/?$ /blog/agiz-cerrahisi/20-yas-disleri-cektirmeli-mi-birakmali-mi [QSD,R=301,L]
+RewriteRule ^blog/yaprak-porselen-lamina-mi-zirkonyum-mu/?$ /blog/estetik-dis-hekimligi/yaprak-porselen-lamina-mi-zirkonyum-mu [QSD,R=301,L]
+RewriteRule ^blog/apikal-rezeksiyon-kok-ucu-cerrahisi/?$ /blog/agiz-cerrahisi/apikal-rezeksiyon-kok-ucu-cerrahisi [QSD,R=301,L]
+RewriteRule ^blog/dis-cekimi-sonrasi-iyilesme-kuru-soket/?$ /blog/agiz-cerrahisi/dis-cekimi-sonrasi-iyilesme-kuru-soket [QSD,R=301,L]
+RewriteRule ^blog/dis-eti-cekilmesi-neden-olur-tedavi-yontemleri/?$ /blog/periodontoloji/dis-eti-cekilmesi-neden-olur-tedavi-yontemleri [QSD,R=301,L]
+RewriteRule ^blog/dijital-gulus-tasarimi/?$ /blog/estetik-dis-hekimligi/dijital-gulus-tasarimi [QSD,R=301,L]
+RewriteRule ^blog/dis-eti-cekilmesi/?$ /blog/periodontoloji/dis-eti-cekilmesi-neden-olur-tedavi-yontemleri [QSD,R=301,L]
+RewriteRule ^blog/cocuklarda-koruyucu-dis-hekimligi/?$ /blog/genel-dis-sagligi-ve-koruyucu-hekimlik/cocuklarda-koruyucu-dis-hekimligi [QSD,R=301,L]
+RewriteRule ^blog/cocuklarda-koruyucu-dis/?$ /blog/genel-dis-sagligi-ve-koruyucu-hekimlik/cocuklarda-koruyucu-dis-hekimligi [QSD,R=301,L]
+RewriteRule ^blog/lazerle-dis-eti-tedavisi/?$ /blog/periodontoloji/lazerle-dis-eti-tedavisi [QSD,R=301,L]
+RewriteRule ^blog/kanal-tedavisi-sonrasi-agri-sislik/?$ /blog/endodonti/kanal-tedavisi-sonrasi-agri-sislik [QSD,R=301,L]
+RewriteRule ^blog/agrisiz-kanal-tedavisi-mumkun-mu/?$ /blog/endodonti/agrisiz-kanal-tedavisi-mumkun-mu [QSD,R=301,L]
+
+# ============================================================
+# 🔥 BLOG KATEGORİ ?k= PARAMETRESİNİ MUTLAK URL'YE ÇEVİR
+# ============================================================
+# Örnek: /blog/?k=genel-dis-sagligi-ve-koruyucu-hekimlik -> /blog/genel-dis-sagligi-ve-koruyucu-hekimlik
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)$ [NC]
+RewriteRule ^blog/?$ /blog/%1? [R=301,L,NE]
+
+# Blog alt dizininde ?k= gelirse temizle: /blog/alt-sayfa?k=... -> /blog/alt-sayfa
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)$ [NC]
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ /blog/$1? [R=301,L,NE]
+
+# ============================================================
+# 1. SSL (HTTPS) VE WWW ZORUNLULUĞU (EN ÜSTTE OLMALI)
+# ============================================================
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^(.*)$ https://www.dribrahimdurandentalclinic.com/$1 [R=301,L]
+
+
+
+# ============================================================
+# 3. İNGİLİZCE YENİ /en/ KLASÖRÜ ROUTING (TEK PHP DOSYASINA BAĞLANIR)
+# ============================================================
+RewriteRule ^/tedaviler/([a-z0-9-]+)/?$ tedavi-detay.php?slug=$1&lang=en [L,NC,QSA]
+
+# ============================================================
+# 4. TÜRKÇE TEDAVİLER BÖLÜMÜ (MEVCUT DİZİN - DOKUNULMUYOR)
+# ============================================================
+# Sondaki /'yi kaldır (/tedaviler/zirkonyum/ -> /tedaviler/zirkonyum)
+RewriteCond %{REQUEST_URI} ^/tedaviler/([^/]+)/$
+RewriteRule ^tedaviler/([^/]+)/$ /tedaviler/$1 [R=301,L]
+
+# Özel 6 kesin yönlendirme
+RewriteRule ^tedaviler/dis-implant$ tedavi-detay.php?slug=dis-implant [L,NC,QSA]
+RewriteRule ^tedaviler/20-yas-disleri$ tedavi-detay.php?slug=20-yas-disleri [L,NC,QSA]
+RewriteRule ^tedaviler/kemik-grefti$ tedavi-detay.php?slug=kemik-grefti [L,NC,QSA]
+RewriteRule ^tedaviler/dikissiz-implant$ tedavi-detay.php?slug=dikissiz-implant [L,NC,QSA]
+RewriteRule ^tedaviler/kisa-implant$ tedavi-detay.php?slug=kisa-implant [L,NC,QSA]
+RewriteRule ^tedaviler/zirkonyum-kaplama$ tedavi-detay.php?slug=zirkonyum-kaplama [L,NC,QSA]
+
+# Genel Türkçe Tedavi Detay Sef URL
+RewriteRule ^tedaviler/([a-z0-9-]+)/?$ tedavi-detay.php?slug=$1&lang=tr [L,NC,QSA]
+
+# 🔥 BLOG ?k= TEMİZLE — lang=en VARSA KORU
+
+# Blog detay (kategori/slug) — TR
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)$ [NC]
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/?$ /blog/$1/$2? [R=301,L,NE]
+
+# Blog detay (kategori/slug) — EN
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)&lang=en$ [NC]
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/?$ /blog/$1/$2?lang=en [R=301,L,NE]
+
+# Blog kategori — TR
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)$ [NC]
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ /blog/$1? [R=301,L,NE]
+
+# Blog kategori — EN
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)&lang=en$ [NC]
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ /blog/$1?lang=en [R=301,L,NE]
+
+# Blog ana — TR
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)$ [NC]
+RewriteRule ^blog/?$ /blog/%1? [R=301,L,NE]
+
+# Blog ana — EN
+RewriteCond %{QUERY_STRING} ^k=([a-zA-Z0-9_-]+)&lang=en$ [NC]
+RewriteRule ^blog/?$ /blog/%1?lang=en [R=301,L,NE]
+
+
+# ============================================================
+# 5. GALERİ YÖNLENDİRMELERİ
+# ============================================================
+
+# 1) Galeri detay: /galeri/kategori-slug/item-slug/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^galeri/([a-z0-9-]+)/([a-z0-9-]+)/?$ /galeri-detay.php?k=$1&slug=$2 [L,QSA]
+
+# 2) Galeri kategori + tip: /galeri/kategori-slug/video/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^galeri/([a-z0-9-]+)/(video|resim)/?$ /galeri/index.php?kat_slug=$1&tip=$2 [L,QSA]
+
+# 3) Galeri sadece tip: /galeri/video/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^galeri/(video|resim)/?$ /galeri/index.php?tip=$1 [L,QSA]
+
+# 4) Galeri sadece kategori: /galeri/kategori-slug/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^galeri/([a-z0-9-]+)/?$ /galeri/index.php?kat_slug=$1 [L,QSA]
+
+# 5) Galeri ana: /galeri/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^galeri/?$ /galeri/index.php [L,QSA]
+
+# Blog Detay
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/([a-zA-Z0-9_-]+)/?$ blog-detay.php?k=$1&slug=$2 [L,QSA]
+
+# Blog Kategori
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ blog/index.php?k=$1 [L,QSA]
+
+# Çerez politikası sayfasını iletişim sayfasına 301 ile yönlendir
+RewriteRule ^cerez-politikasi/?$ /iletisim/ [R=301,L]
+RewriteRule ^cerez-politikasi/(.*)$ /iletisim/ [R=301,L]
+
+
+
+# ============================================================
+# 6. ESKİ URL TEMİZLİKLERİ VE DİĞER SAYFALAR
+# ============================================================
+RewriteRule ^protetik-dis-tedavisi/?$ - [G,L]
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+ErrorDocument 404 /404.php
+
+RewriteRule ^site/randevu/?$ /iletisim/ [R=301,L]
+RewriteRule ^kayit/?$ /iletisim/ [R=301,L]
+RewriteRule ^cerez-politikasi/?$ /kvkk/ [R=301,L]
+RewriteRule ^llms\.txt$ llms.php [L]
+
+
+
+# ============================================================
+# 7. PERFORMANS VE ÖNBELLEK
+# ============================================================
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/x-javascript application/xml font/woff2 font/woff
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+</IfModule>

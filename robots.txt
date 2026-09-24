@@ -1,0 +1,107 @@
+# ============================================
+# ROBOTS.TXT - Prof. Dr. İbrahim Duran
+# RivaDent Diş Kliniği - Protetik Diş Tedavisi Uzmanı
+# Samsun / Atakum
+# ============================================
+
+# 1. TÜM DÜNYAYA VE TÜM YAPAY ZEKALARA GENEL AÇILIŞ
+User-agent: *
+Allow: /
+
+Disallow: /*.ico
+Disallow: /*?favicon.*
+
+# 2. ÖZEL OLARAK BÜYÜK AI MOTORLARINA KIRMIZI HALI
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# ============================================
+# DEFANSİF SEOMATİK ENGELLER (HAYALET LİNK KORUMASI)
+# ============================================
+Disallow: /tedavi-detay.php?lang=*&slug=$
+Disallow: /tedavi-detay.php?slug=&lang=*
+Disallow: /tedavi-detay.php?slug=$
+Disallow: /*.php?*slug=$
+Disallow: /*.php?*slug=&
+Disallow: /tedaviler/?lang=*
+
+# ============================================
+# GÜVENLİK VE SİSTEM KORUMASI
+# ============================================
+Disallow: /admin/
+Disallow: /inc/
+Disallow: /assets/chunks/
+Disallow: /api/
+Disallow: /*.sql$
+Disallow: /*.zip$
+Disallow: /api/yorum-listele.php
+
+# --- HASSAS DOSYALAR (YENİ) ---
+Disallow: /.git/
+Disallow: /.env
+Disallow: /.htaccess
+Disallow: /composer.json
+Disallow: /composer.lock
+Disallow: /package.json
+Disallow: /package-lock.json
+Disallow: /yarn.lock
+
+# --- YEDEK VE GEÇİCİ DOSYALAR (YENİ) ---
+Disallow: /*.log$
+Disallow: /*.bak$
+Disallow: /*.old$
+Disallow: /*.backup$
+Disallow: /*.swp$
+Disallow: /*.save$
+Disallow: /*~
+Disallow: /node_modules/
+Disallow: /vendor/
+
+# --- YAZDIR/PRINT VERSİYONLARI (YENİ) ---
+Disallow: /*?print=
+Disallow: /*?yazdir=
+Disallow: /print/
+Disallow: /yazdir/
+
+# ============================================
+# YANDEX ÖZEL AYARLAR (YENİ)
+# ============================================
+User-agent: Yandex
+Crawl-delay: 1
+Clean-param: utm_source&utm_medium&utm_campaign&utm_content&utm_term
+Clean-param: fbclid&gclid&yclid&_openstat
+Clean-param: ref&referrer
+
+# ============================================
+# SİTE HARİTALARI
+# ============================================
+Sitemap: https://www.dribrahimdurandentalclinic.com/sitemap.php
+Sitemap: https://www.dribrahimdurandentalclinic.com/yandex-rss.php?lang=tr
+Sitemap: https://www.dribrahimdurandentalclinic.com/yandex-rss.php?lang=en

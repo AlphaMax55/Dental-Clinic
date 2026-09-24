@@ -1,0 +1,3 @@
+# ========== INC KLASÖRÜNÜ KORU ==========
+Order Deny,Allow
+Deny from all
